@@ -26,6 +26,7 @@ import org.eclipse.e4.ui.model.application.MAddon;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.workbench.IResourceUtilities;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
+import org.eclipse.e4.ui.workbench.renderers.swt.WorkbenchRendererFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -35,7 +36,6 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 import org.osgi.framework.FrameworkUtil;
 
-import com.make.equo.renderers.EclipseWebRendererFactory;
 import com.make.equo.testing.common.statements.InjectStatement;
 import com.make.equo.testing.common.statements.RunInThreadStatement;
 
@@ -45,7 +45,7 @@ public class EquoRule implements TestRule {
 
 	private IEclipseContext eclipseContext;
 
-	private EclipseWebRendererFactory rendererFactory;
+	private WorkbenchRendererFactory rendererFactory;
 
 	private CommandProcessingAddon commandAddon;
 
@@ -99,7 +99,7 @@ public class EquoRule implements TestRule {
 
 	@SuppressWarnings({ "rawtypes", "unused" })
 	public EquoRule withApplicationContext(MApplication app) {
-		rendererFactory = new EclipseWebRendererFactory();
+		rendererFactory = new WorkbenchRendererFactory();
 		eclipseContext = EclipseContextFactory
 				.getServiceContext(FrameworkUtil.getBundle(this.getClass()).getBundleContext());
 
@@ -179,7 +179,7 @@ public class EquoRule implements TestRule {
 		return eclipseContext;
 	}
 
-	public EclipseWebRendererFactory getRendererFactory() {
+	public WorkbenchRendererFactory getRendererFactory() {
 		return rendererFactory;
 	}
 
