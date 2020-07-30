@@ -10,7 +10,7 @@ task uploadEquoTestBuild(type: com.make.equo.UploadFileTask) {
 
 task uploadEquoTestBundle(type: com.make.equo.UploadFileTask) {
     key "${equo.channel}/${version}/testbundle.bnd"
-    file file('cnf/ext/testbundle.bnd')
+    file file('cnf/testbundle.bnd')
 }
 
 task uploadEquoTestBundleCoverage(type: com.make.equo.UploadFileTask) {
