@@ -97,9 +97,13 @@ public class EquoRule implements TestRule {
 		return this;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unused" })
 	public EquoRule withApplicationContext(MApplication app) {
 		rendererFactory = new WorkbenchRendererFactory();
+		return withApplicationContext(app, rendererFactory);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unused" })
+	public EquoRule withApplicationContext(MApplication app, WorkbenchRendererFactory rendererFactory) {
 		eclipseContext = EclipseContextFactory
 				.getServiceContext(FrameworkUtil.getBundle(this.getClass()).getBundleContext());
 
