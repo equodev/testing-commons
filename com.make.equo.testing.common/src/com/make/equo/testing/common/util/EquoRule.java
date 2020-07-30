@@ -98,12 +98,12 @@ public class EquoRule implements TestRule {
 	}
 
 	public EquoRule withApplicationContext(MApplication app) {
-		rendererFactory = new WorkbenchRendererFactory();
-		return withApplicationContext(app, rendererFactory);
+		return withApplicationContext(app, new WorkbenchRendererFactory());
 	}
 
 	@SuppressWarnings({ "rawtypes", "unused" })
 	public EquoRule withApplicationContext(MApplication app, WorkbenchRendererFactory rendererFactory) {
+		this.rendererFactory = rendererFactory;
 		eclipseContext = EclipseContextFactory
 				.getServiceContext(FrameworkUtil.getBundle(this.getClass()).getBundleContext());
 
