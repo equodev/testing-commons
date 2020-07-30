@@ -1,13 +1,15 @@
--include ${build}/../com.make.equo.testing.common/testing.bnd
+-include ${build}/testbundle.bnd
 
+Bundle-Version: ${version}.${tstamp}
 Export-Package: \
     com.make.equo.testing.common.components,\
     com.make.equo.testing.common.statements,\
     com.make.equo.testing.common.util
 
+-buildpath.graphics: ${if;${matches;${tolower;${os.name}};.*win.*};org.eclipse.swt.win32.win32.x86_64;${if;${matches;${tolower;${os.name}};.*mac.*};org.eclipse.swt.cocoa.macosx.x86_64;org.eclipse.swt.gtk.linux.x86_64}}
+
 -buildpath: \
-    com.make.equo.application.provider;version=latest,\
-    com.make.equo.renderers;version=latest,\
+	org.eclipse.swt,\
     org.eclipse.e4.ui.workbench,\
     org.eclipse.e4.ui.workbench.swt,\
     org.eclipse.e4.ui.model.workbench,\
@@ -16,4 +18,5 @@ Export-Package: \
     org.eclipse.e4.core.commands,\
     org.eclipse.core.commands,\
     org.mockito.mockito-all,\
-    org.eclipse.e4.ui.workbench.renderers.swt
+    org.eclipse.e4.ui.workbench.renderers.swt,\
+    org.apache.servicemix.bundles.junit;version=4.12
