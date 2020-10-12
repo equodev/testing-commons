@@ -1,20 +1,20 @@
 equo {
-    channel = "rls"
+    channel = version
     space = "testing-core"
 }
 
 task uploadEquoTestBuild(type: com.make.equo.UploadFileTask) {
-    key "${equo.channel}/${version}/testbuild.bnd"
+    key "${equo.channel}/testbuild.bnd"
     file file('cnf/testbuild.bnd')
 }
 
 task uploadEquoTestBundle(type: com.make.equo.UploadFileTask) {
-    key "${equo.channel}/${version}/testbundle.bnd"
+    key "${equo.channel}/testbundle.bnd"
     file file('cnf/testbundle.bnd')
 }
 
 task uploadEquoTestBundleCoverage(type: com.make.equo.UploadFileTask) {
-    key "${equo.channel}/${version}/testbundlecoverage.bnd"
+    key "${equo.channel}/testbundlecoverage.bnd"
     file file('cnf/testbundlecoverage.bnd')
 }
 
