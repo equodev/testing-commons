@@ -3,9 +3,15 @@ equo {
     space = "testing-core"
 }
 
-task uploadEquoTestBuild(type: com.make.equo.UploadFileTask) {
+task replaceVersionOnTestBuild(type: Copy){
+    from 'cnf/testbuild.bnd'
+    into '/tmp/testbuild'
+    filter { line -> line.replaceAll('VERSIONPLACEHOLDER', "${version}") }
+}
+
+task uploadEquoTestBuild(type: com.make.equo.UploadFileTask, dependsOn: replaceVersionOnTestBuild) {
     key "${equo.channel}/testbuild.bnd"
-    file file('cnf/testbuild.bnd')
+    file file('/tmp/testbuild/testbuild.bnd')
 }
 
 task uploadEquoTestBundle(type: com.make.equo.UploadFileTask) {
