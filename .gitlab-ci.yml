@@ -42,6 +42,7 @@ release:
   stage: release
   script:
     - gradle $gradle_opt release
+    - gradle $gradle_opt run.p2
     - gradle $gradle_opt publish
   only:
     - master
