@@ -30,10 +30,6 @@ task uploadMetadata(type: com.make.equo.UploadMetadataTask) {
 task publish(type: com.make.equo.UploadRepoTask, dependsOn: [uploadEquoTestBuild, uploadEquoTestBundle, uploadEquoTestBundleCoverage, uploadMetadata]) {
 }
 
-task wrapper(type: Wrapper) {
-  jarFile = rootProject.file('.gradle-wrapper/gradle-wrapper.jar')
-}
-
 /* Additional configuration for the Bnd projects */
 subprojects {
   if (plugins.hasPlugin('biz.aQute.bnd')) {
