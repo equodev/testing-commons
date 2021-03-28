@@ -1,0 +1,15 @@
+
+eclipseApplication=org.eclipse.ui.ide.workbench
+vmargs:${if;${matches;${tolower;${os.name}};.*mac.*};-XstartOnFirstThread;}
+
+-runvm: ${vmargs}
+
+-runproperties.eclipse: \
+    eclipse.application=${def;eclipseApplication;org.eclipse.e4.ui.workbench.swt.E4Application},\
+    eclipse.consoleLog=true,\
+    launch.keep=false,\
+    launch.storage.dir=.rt/cfg,\
+    osgi.instance.area=.rt/workspace,\
+    perspective=Java,\
+    com.apple.mrj.application.apple.menu.about.name=${def;appName}
+    

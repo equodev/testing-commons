@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.core.commands.CommandManager;
 import org.eclipse.e4.core.commands.ECommandService;
@@ -31,18 +32,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 import org.osgi.framework.FrameworkUtil;
 
-import com.make.equo.testing.common.statements.InjectStatement;
-import com.make.equo.testing.common.statements.RunInThreadStatement;
+public class EquoRule extends AbstractEquoRule<EquoRule> {
 
-public class EquoRule implements TestRule {
-
-	private Object testCase;
-
+	
 	private IEclipseContext eclipseContext;
 
 	private WorkbenchRendererFactory rendererFactory;
@@ -53,36 +48,19 @@ public class EquoRule implements TestRule {
 
 	private ModelServiceImpl modelService;
 
-	private boolean runInNonUIThread;
-	private boolean displayOwner;
-	private Display display;
-
+	
 	private List<Shell> preExistingShells;
 
 	public EquoRule(Object testCase) {
-		this.testCase = testCase;
-		this.runInNonUIThread = false;
+		super(testCase);
 		preExistingShells = Arrays.asList(captureShells());
 	}
-
-	public Statement apply(Statement base, Description description) {
-		Statement tempResult = new InjectStatement(base, testCase);
-		if (runInNonUIThread) {
-			tempResult = new RunInThreadStatement(tempResult, getDisplay());
-		}
-
-		final Statement result = tempResult;
-		return new Statement() {
-			@Override
-			public void evaluate() throws Throwable {
-				try {
-					result.evaluate();
-				} finally {
-					dispose();
-				}
-			}
-		};
+	
+	@Override
+	protected Optional<Statement> additionalStatements(Statement base) {
+		return Optional.empty();
 	}
+	
 
 	public Shell createShell() {
 		return createShell(SWT.SHELL_TRIM);
@@ -90,11 +68,6 @@ public class EquoRule implements TestRule {
 
 	public Shell createShell(int style) {
 		return new Shell(getDisplay(), style);
-	}
-
-	public EquoRule runInNonUIThread() {
-		runInNonUIThread = true;
-		return this;
 	}
 
 	public EquoRule withApplicationContext(MApplication app) {
@@ -171,14 +144,7 @@ public class EquoRule implements TestRule {
 		return this;
 	}
 
-	public Display getDisplay() {
-		if (display == null) {
-			displayOwner = Display.getCurrent() == null;
-			display = Display.getDefault();
-		}
-		return display;
-	}
-
+	
 	public IEclipseContext getEclipseContext() {
 		return eclipseContext;
 	}
@@ -199,14 +165,10 @@ public class EquoRule implements TestRule {
 		return modelService;
 	}
 
-	public void dispose() {
-		if (runInNonUIThread) {
-			flushPendingEvents();
-		}
-		disposeNewShells();
-		disposeDisplay();
+	public void additionalDisposes() {
+		disposeNewShells();		
 	}
-
+	
 	private static Shell[] captureShells() {
 		Shell[] result = new Shell[0];
 		Display currentDisplay = Display.getCurrent();
@@ -231,21 +193,6 @@ public class EquoRule implements TestRule {
 		List<Shell> newShells = getNewShells();
 		for (Shell shell : newShells) {
 			shell.dispose();
-		}
-	}
-
-	private void disposeDisplay() {
-		if (display != null && displayOwner) {
-			if (display.isDisposed()) {
-				display.dispose();
-			}
-			display = null;
-		}
-	}
-
-	public void flushPendingEvents() {
-		while (Display.getCurrent() != null && !Display.getCurrent().isDisposed()
-				&& Display.getCurrent().readAndDispatch()) {
 		}
 	}
 
