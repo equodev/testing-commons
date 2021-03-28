@@ -2,21 +2,64 @@
 
 Bundle-Version: ${version}.${tstamp}
 Export-Package: \
-    com.make.equo.testing.common.components,\
+    com.make.equo.testing.common.support,\
     com.make.equo.testing.common.statements,\
     com.make.equo.testing.common.util
+
+eclipseApplication=org.eclipse.ui.ide.workbench
+vmargs:${if;${matches;${tolower;${os.name}};.*mac.*};-XstartOnFirstThread;}
+
+
+-runproperties: \
+    eclipse.application=${def;eclipseApplication;org.eclipse.e4.ui.workbench.swt.E4Application},\
+    eclipse.consoleLog=true,\
+    launch.keep=false,\
+    launch.storage.dir=.rt/cfg,\
+    osgi.instance.area=.rt/workspace,\
+    perspective=Java,\
+    com.apple.mrj.application.apple.menu.about.name=${def;appName}
+   
+
 
 -buildpath.graphics: ${if;${matches;${tolower;${os.name}};.*win.*};org.eclipse.swt.win32.win32.x86_64;${if;${matches;${tolower;${os.name}};.*mac.*};org.eclipse.swt.cocoa.macosx.x86_64;org.eclipse.swt.gtk.linux.x86_64}}
 
 -buildpath: \
 	org.eclipse.swt,\
-    org.eclipse.e4.ui.workbench,\
-    org.eclipse.e4.ui.workbench.swt,\
-    org.eclipse.e4.ui.model.workbench,\
-    org.eclipse.e4.ui.di,\
-    org.eclipse.e4.core.services,\
-    org.eclipse.e4.core.commands,\
-    org.eclipse.core.commands,\
-    org.mockito.mockito-all,\
-    org.eclipse.e4.ui.workbench.renderers.swt,\
-    org.apache.servicemix.bundles.junit;version=4.12
+	org.eclipse.e4.ui.workbench,\
+	org.eclipse.e4.ui.workbench3,\
+	org.eclipse.e4.ui.workbench.swt,\
+	org.eclipse.e4.ui.model.workbench,\
+	org.eclipse.e4.ui.di,\
+	org.eclipse.e4.core.services,\
+	org.eclipse.e4.core.commands,\
+	org.eclipse.equinox.app,\
+	org.eclipse.ui.ide,\
+	org.eclipse.equinox.common,\
+	org.eclipse.core.commands,\
+	org.mockito.mockito-all,\
+	org.eclipse.e4.ui.workbench.renderers.swt,\
+	org.apache.servicemix.bundles.junit;version=4.12,\
+	org.eclipse.reddeer.common,\
+	org.eclipse.reddeer.core,\
+	org.eclipse.reddeer.core.source,\
+	org.eclipse.reddeer.common.source,\
+	org.eclipse.reddeer.direct,\
+	org.eclipse.reddeer.direct.source,\
+	org.eclipse.reddeer.junit,\
+	org.eclipse.reddeer.junit.source,\
+	org.eclipse.reddeer.requirements,\
+	org.eclipse.reddeer.requirements.source,\
+	org.eclipse.reddeer.workbench,\
+	org.eclipse.reddeer.workbench.source,\
+	org.eclipse.jface,\
+	org.eclipse.ui.workbench,\
+	org.eclipse.ui
+    
+ -runbundles.common: \
+ 	org.eclipse.reddeer.direct; bundle-version='[2.9.0,2.9.1)',\
+    org.eclipse.reddeer.requirements; bundle-version='[2.9.0,2.9.1)',\
+    org.eclipse.reddeer.workbench; bundle-version='[2.9.0,2.9.1)',\
+	org.eclipse.reddeer.workbench.core;bundle-version='[2.9.0,2.9.1)',\
+	org.eclipse.reddeer.common;bundle-version='[2.9.0,2.9.1)',\
+	org.eclipse.reddeer.junit; bundle-version='[2.9.0,2.9.1)'
+ 	 

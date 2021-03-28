@@ -47,7 +47,7 @@ public class RunInThreadStatement extends Statement {
 
 	private void waitTillFinished() {
 		while (!future.isDone()) {
-			if (!display.readAndDispatch()) {
+			if (!display.isDisposed() && !display.readAndDispatch()) {
 				display.sleep();
 			}
 		}

@@ -20,3 +20,8 @@ javac.debug:            on
         name = "Maven Central"; \
         readOnly = true; \
         cache = ~/.bnd/cache/mvncentral
+
+ -plugin.2.Reedeer: \
+    aQute.bnd.repository.p2.provider.P2Repository; \
+        name = "Reddeer"; \
+        url = "https://download.eclipse.org/reddeer/releases/2.9.0"
