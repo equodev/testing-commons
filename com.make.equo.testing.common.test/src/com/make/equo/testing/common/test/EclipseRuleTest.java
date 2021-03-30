@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.JavaProjectWizard;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageOne;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.eclipse.swt.widgets.Display;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,6 +25,8 @@ public class EclipseRuleTest {
 	@Test
 	public void ruleRunWithoutExceptionsTest() {
 		System.out.println("Running Test");
+		//Open Java perspective
+		new JavaPerspective().open();
 		//Given a project
 		JavaProjectWizard projectDlg = new JavaProjectWizard();
 		projectDlg.open();
@@ -44,6 +47,8 @@ public class EclipseRuleTest {
 	@Test
 	public void cleanProjectTest() {
 		System.out.println("cleanProjectTest");
+		//Open Java perspective
+		new JavaPerspective().open();
 		//Given a project
 		JavaProjectWizard projectDlg = new JavaProjectWizard();
 		projectDlg.open();
