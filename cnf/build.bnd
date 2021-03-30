@@ -20,6 +20,3 @@
 
 -releaserepo: Release
 -baselinerepo: Release
-
--runblacklist: \
-    osgi.identity;filter:='(osgi.identity=org.junit)'
