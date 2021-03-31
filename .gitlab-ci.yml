@@ -2,6 +2,7 @@ image: registry.gitlab.com/maketechnology/equo/docker/gradle5.4.1:adoptopenjdk8-
 
 stages:
   - build
+  - test
   - release
 
 variables:
@@ -36,6 +37,23 @@ build:
   stage: build
   script:
     - gradle $gradle_opt assemble
+
+test:
+  extends: .all
+  stage: test
+  script:
+    - gradle $gradle_opt test
+
+test.integration:
+  extends: .all
+  image: registry.gitlab.com/maketechpub/docker/adopt:ubuntu.jdk8.gtk3
+  stage: test
+  before_script:
+    - Xvfb :1 -screen 0 1152x720x24+32 -ac -noreset 2> xvfb.err &
+    - export DISPLAY=:1
+  script:
+    - ./gradlew $gradle_opt testOSGi || (kill $(pidof Xvfb) && false)
+    - kill $(pidof Xvfb)
 
 release:
   extends: .all
