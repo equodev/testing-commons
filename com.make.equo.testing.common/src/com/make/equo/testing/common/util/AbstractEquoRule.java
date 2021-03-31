@@ -17,26 +17,24 @@ public abstract class AbstractEquoRule<T extends AbstractEquoRule<T>> implements
 	private boolean runInNonUIThread;
 	private boolean displayOwner;
 	private Display display;
-	
+
 	public AbstractEquoRule(Object testCase) {
 		super();
 		this.testCase = testCase;
 	}
 
-
-
 	@Override
 	public final Statement apply(Statement base, Description description) {
 		Statement tempResult = new InjectStatement(base, testCase);
-		
+
 		Optional<Statement> optStatement = additionalStatements(tempResult);
-		if(optStatement.isPresent()) {
+		if (optStatement.isPresent()) {
 			tempResult = optStatement.get();
 		}
 		if (runInNonUIThread) {
 			tempResult = new RunInThreadStatement(tempResult, getDisplay());
 		}
-		
+
 		final Statement result = tempResult;
 		return new Statement() {
 			@Override
@@ -49,7 +47,7 @@ public abstract class AbstractEquoRule<T extends AbstractEquoRule<T>> implements
 			}
 		};
 	}
-	
+
 	protected abstract Optional<Statement> additionalStatements(Statement base);
 
 	public Display getDisplay() {
@@ -59,7 +57,7 @@ public abstract class AbstractEquoRule<T extends AbstractEquoRule<T>> implements
 		}
 		return display;
 	}
-	
+
 	private void disposeDisplay() {
 		if (display != null && displayOwner) {
 			if (!display.isDisposed()) {
@@ -68,21 +66,21 @@ public abstract class AbstractEquoRule<T extends AbstractEquoRule<T>> implements
 			display = null;
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public T runInNonUIThread() {
 		runInNonUIThread = true;
 		return (T) this;
 	}
-	
+
 	public final void dispose() {
 		if (runInNonUIThread) {
 			flushPendingEvents();
 		}
 		additionalDisposes();
-		disposeDisplay();
+//		disposeDisplay();
 	}
-	
+
 	protected abstract void additionalDisposes();
 
 	public void flushPendingEvents() {
