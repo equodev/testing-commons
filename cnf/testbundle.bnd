@@ -66,9 +66,13 @@
     io.netty.all;version='[4.0.44,4.0.45)',\
     com.make.equo.aer.api;version=latest,\
     com.make.equo.aer.internal.api;version=latest,\
+    com.make.equo.contribution.api;version=latest,\
+    com.make.equo.contribution.provider;version=latest,\
     com.make.equo.server.provider;version=latest,\
     com.make.equo.analytics.internal.api;version=latest,\
     com.make.equo.application.provider;version=latest,\
+    com.make.equo.logging.client.api;version=latest,\
+    com.make.equo.logging.client.core.provider;version=latest,\
     com.make.equo.server.api;version=latest,\
     com.make.equo.server.offline.api;version=latest,\
     com.make.equo.ws.api;version=latest,\
