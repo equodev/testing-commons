@@ -54,7 +54,7 @@
 #        osgi.identity;filter:='(osgi.identity=com.make.equo.server.provider)'
 -runbundles.testing: \
     com.ibm.icu;version='[64.2.0,64.2.1)',\
-    com.google.guava;version='[20.0.0,20.0.1)',\
+    com.google.guava;version='[27.0.0,28.0.0)',\
     org.apache.ant;version='[1.10.7,1.10.8)',\
     org.apache.batik.constants;version='[1.11.0,1.11.1)',\
     org.apache.batik.i18n;version='[1.11.0,1.11.1)',\
