@@ -1,12 +1,16 @@
 equo {
-    channel = version
+    if (project.hasProperty('deployingrelease')) {
+        channel = version
+    } else {
+        channel = "develop"
+    }
     space = "testing-core"
 }
 
 task replaceVersionOnTestBuild(type: Copy){
     from 'cnf/testbuild.bnd'
     into '/tmp/testbuild'
-    filter { line -> line.replaceAll('VERSIONPLACEHOLDER', "${version}") }
+    filter { line -> line.replaceAll('VERSIONPLACEHOLDER', "${equo.channel}") }
 }
 
 task uploadEquoTestBuild(type: com.make.equo.UploadFileTask, dependsOn: replaceVersionOnTestBuild) {

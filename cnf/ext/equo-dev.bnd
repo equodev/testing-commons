@@ -1,6 +1,3 @@
-javac.source:           1.8
-javac.target:           1.8
-javac.compliance:       1.8
 javac.debug:            on
 
 -include: ${workspace}/gradle.properties
@@ -25,3 +22,5 @@ javac.debug:            on
     aQute.bnd.repository.p2.provider.P2Repository; \
         name = "Reddeer"; \
         url = "https://download.eclipse.org/reddeer/releases/2.9.0"
+
+bundleversion: ${if;${is;${deployingrelease};true};${version};${version}.${tstamp}}

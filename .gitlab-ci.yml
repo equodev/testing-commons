@@ -55,13 +55,26 @@ test.integration:
     - ./gradlew $gradle_opt testOSGi || (kill $(pidof Xvfb) && false)
     - kill $(pidof Xvfb)
 
+.release_steps: &release_steps
+  - gradle $gradle_opt release
+  - gradle $gradle_opt run.p2
+  - cp p2.index cnf/release && xz -e cnf/release/artifacts.xml && xz -e cnf/release/content.xml
+  - gradle $gradle_opt publish
+
+release.develop:
+  extends: .all
+  stage: release
+  script:
+    - *release_steps
+  only:
+    - develop
+
 release:
   extends: .all
   stage: release
   script:
-    - gradle $gradle_opt release
-    - gradle $gradle_opt run.p2
-    - cp p2.index cnf/release && xz -e cnf/release/artifacts.xml && xz -e cnf/release/content.xml
-    - gradle $gradle_opt publish
+    - echo $'\n'"deployingrelease=true" >> gradle.properties
+    - *release_steps
   only:
     - master
+  when: manual

@@ -1,6 +1,6 @@
 Test-Cases: ${classes;CONCRETE;PUBLIC;NAMED;*Test}
 
-Bundle-Version: ${version}.${tstamp}
+Bundle-Version: ${bundleversion}
 
 -include: ${build}/testbundleeclipse.bnd
 
