@@ -1,11 +1,11 @@
-package com.make.equo.testing.common.test;
+package com.equo.testing.common.test;
 
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.make.equo.testing.common.util.EquoRule;
+import com.equo.testing.common.util.EquoRule;
 
 public class EquoRuleTest {
 	

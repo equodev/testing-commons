@@ -1,10 +1,10 @@
 Bundle-Version: 1.0.0.${tstamp}
-Bundle-SymbolicName: com.make.equo.p2repo;singleton:=true
+Bundle-SymbolicName: com.equo.p2repo;singleton:=true
 -runfw: org.eclipse.osgi;version='[3.15.100.v20191114-1701,3.15.100.v20191114-1701]'
 -runee: JavaSE-11
 
 -runrequires: \
-	bnd.identity;version='latest';id='com.make.equo.testing.common',\
+	bnd.identity;version='latest';id='com.equo.testing.common',\
 	bnd.identity;id='assertj-core',\
 	bnd.identity;id='org.apache.servicemix.bundles.junit',\
 	bnd.identity;id='org.mockito.mockito-all',\
@@ -25,7 +25,7 @@ runbundles: \
 	com.fasterxml.jackson.core.jackson-core;version='[2.9.9,2.9.10)',\
 	com.fasterxml.jackson.core.jackson-databind;version='[2.9.93,2.9.94)',\
 	com.ibm.icu;version='[64.2.0,64.2.1)',\
-	com.make.equo.testing.common;version=snapshot,\
+	com.equo.testing.common;version=snapshot,\
 	javax.annotation;version='[1.2.0,1.2.1)',\
 	javax.inject;version='[1.0.0,1.0.1)',\
 	org.apache.batik.constants;version='[1.11.0,1.11.1)',\

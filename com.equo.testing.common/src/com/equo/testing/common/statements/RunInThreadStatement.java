@@ -1,4 +1,4 @@
-package com.make.equo.testing.common.statements;
+package com.equo.testing.common.statements;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

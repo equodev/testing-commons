@@ -1,4 +1,4 @@
-package com.make.equo.testing.common.statements;
+package com.equo.testing.common.statements;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;

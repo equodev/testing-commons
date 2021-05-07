@@ -2,9 +2,9 @@
 
 Bundle-Version: 1.0.0.${tstamp}
 Export-Package: \
-    com.make.equo.testing.common.support,\
-    com.make.equo.testing.common.statements,\
-    com.make.equo.testing.common.util
+    com.equo.testing.common.support,\
+    com.equo.testing.common.statements,\
+    com.equo.testing.common.util
 
 eclipseApplication=org.eclipse.ui.ide.workbench
 vmargs:${if;${matches;${tolower;${os.name}};.*mac.*};-XstartOnFirstThread;}

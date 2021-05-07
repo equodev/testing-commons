@@ -1,4 +1,4 @@
-package com.make.equo.testing.common.util;
+package com.equo.testing.common.util;
 
 import java.util.Optional;
 
@@ -7,8 +7,8 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-import com.make.equo.testing.common.statements.InjectStatement;
-import com.make.equo.testing.common.statements.RunInThreadStatement;
+import com.equo.testing.common.statements.InjectStatement;
+import com.equo.testing.common.statements.RunInThreadStatement;
 
 public abstract class AbstractEquoRule<T extends AbstractEquoRule<T>> implements TestRule {
 

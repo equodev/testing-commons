@@ -1,10 +1,10 @@
-package com.make.equo.testing.common.util;
+package com.equo.testing.common.util;
 
 import java.util.Optional;
 
 import org.junit.runners.model.Statement;
 
-import com.make.equo.testing.common.statements.EclipseStatement;
+import com.equo.testing.common.statements.EclipseStatement;
 
 public class EclipseRule extends AbstractEquoRule<EclipseRule> {
 

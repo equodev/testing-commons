@@ -1,4 +1,4 @@
-package com.make.equo.testing.common.util;
+package com.equo.testing.common.util;
 
 import static org.mockito.Mockito.mock;
 

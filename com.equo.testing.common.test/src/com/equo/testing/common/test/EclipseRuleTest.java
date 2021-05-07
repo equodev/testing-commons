@@ -1,4 +1,4 @@
-package com.make.equo.testing.common.test;
+package com.equo.testing.common.test;
 
 import static org.junit.Assert.assertTrue;
 
@@ -11,8 +11,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-import com.make.equo.testing.common.statements.EclipseStatement;
-import com.make.equo.testing.common.util.EclipseRule;
+import com.equo.testing.common.statements.EclipseStatement;
+import com.equo.testing.common.util.EclipseRule;
 
 public class EclipseRuleTest {
 	
