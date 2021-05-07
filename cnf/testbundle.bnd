@@ -70,7 +70,7 @@
     com.equo.contribution.provider;version=latest,\
     com.equo.server.provider;version=latest,\
     com.equo.analytics.internal.api;version=latest,\
-    com.equo.application.provider;version=latest,\
+    com.equo.application.client;version=latest,\
     com.equo.logging.client.api;version=latest,\
     com.equo.logging.client.core.provider;version=latest,\
     com.equo.server.api;version=latest,\
