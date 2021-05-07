@@ -1,6 +1,6 @@
 -include ${build}/testbundle.bnd
 
-Bundle-Version: ${bundleversion}
+Bundle-Version: 1.0.0.${tstamp}
 Export-Package: \
     com.make.equo.testing.common.support,\
     com.make.equo.testing.common.statements,\
