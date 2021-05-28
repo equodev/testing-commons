@@ -10,7 +10,7 @@ chromiumos:${if;${matches;${tolower;${os.name}};.*win.*};win32;${if;${matches;${
 swt.fragment: org.eclipse.swt.${ws}.${os}.x86_64
 
 -buildpath.graphics: ${swt.fragment}
-    
+
 -buildpath: \
     com.equo.testing.common; version=latest,\
     org.apache.servicemix.bundles.junit; version=4.12,\
@@ -38,12 +38,12 @@ swt.fragment: org.eclipse.swt.${ws}.${os}.x86_64
     org.java-websocket.Java-WebSocket,\
 	org.eclipse.osgi,\
 	javax.inject
-    
+
 -runrequires: \
 	osgi.identity;filter:='(osgi.identity=org.apache.felix.scr)',\
 	osgi.identity;filter:='(osgi.identity=bndtools.runtime.eclipse.applaunch)',\
 	osgi.identity;filter:='(osgi.identity=com.equo.testing.common)'
-	
+
 -runfw: org.eclipse.osgi;version='[3.15.100.v20191114-1701,3.15.100.v20191114-1701]'
 -runee: JavaSE-11
 
@@ -52,7 +52,7 @@ swt.fragment: org.eclipse.swt.${ws}.${os}.x86_64
 	org.apache.felix.gogo.command,\
     org.apache.felix.gogo.runtime,\
     org.apache.felix.gogo.shell
-    
+
 -runproperties.debug: \
     osgi.console=
 
