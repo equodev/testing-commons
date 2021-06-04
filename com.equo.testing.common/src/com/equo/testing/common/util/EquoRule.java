@@ -37,163 +37,160 @@ import org.osgi.framework.FrameworkUtil;
 
 public class EquoRule extends AbstractEquoRule<EquoRule> {
 
-	
-	private IEclipseContext eclipseContext;
+  private IEclipseContext eclipseContext;
 
-	private WorkbenchRendererFactory rendererFactory;
+  private WorkbenchRendererFactory rendererFactory;
 
-	private CommandProcessingAddon commandAddon;
+  private CommandProcessingAddon commandAddon;
 
-	private HandlerProcessingAddon handlerAddon;
+  private HandlerProcessingAddon handlerAddon;
 
-	private ModelServiceImpl modelService;
+  private ModelServiceImpl modelService;
 
-	
-	private List<Shell> preExistingShells;
+  private List<Shell> preExistingShells;
 
-	public EquoRule(Object testCase) {
-		super(testCase);
-		preExistingShells = Arrays.asList(captureShells());
-	}
-	
-	@Override
-	protected Optional<Statement> additionalStatements(Statement base) {
-		return Optional.empty();
-	}
-	
+  public EquoRule(Object testCase) {
+    super(testCase);
+    preExistingShells = Arrays.asList(captureShells());
+  }
 
-	public Shell createShell() {
-		return createShell(SWT.SHELL_TRIM);
-	}
+  @Override
+  protected Optional<Statement> additionalStatements(Statement base) {
+    return Optional.empty();
+  }
 
-	public Shell createShell(int style) {
-		return new Shell(getDisplay(), style);
-	}
+  public Shell createShell() {
+    return createShell(SWT.SHELL_TRIM);
+  }
 
-	public EquoRule withApplicationContext(MApplication app) {
-		return withApplicationContext(app, new WorkbenchRendererFactory());
-	}
+  public Shell createShell(int style) {
+    return new Shell(getDisplay(), style);
+  }
 
-	@SuppressWarnings({ "rawtypes", "unused" })
-	public EquoRule withApplicationContext(MApplication app, WorkbenchRendererFactory rendererFactory) {
-		this.rendererFactory = rendererFactory;
-		eclipseContext = EclipseContextFactory
-				.getServiceContext(FrameworkUtil.getBundle(this.getClass()).getBundleContext());
+  public EquoRule withApplicationContext(MApplication app) {
+    return withApplicationContext(app, new WorkbenchRendererFactory());
+  }
 
-		rendererFactory.init(eclipseContext);
+  @SuppressWarnings({ "rawtypes", "unused" })
+  public EquoRule withApplicationContext(MApplication app,
+      WorkbenchRendererFactory rendererFactory) {
+    this.rendererFactory = rendererFactory;
+    eclipseContext = EclipseContextFactory
+        .getServiceContext(FrameworkUtil.getBundle(this.getClass()).getBundleContext());
 
-		IContributionFactory factory = new ReflectionContributionFactory();
-		eclipseContext.set(IContributionFactory.class, factory);
+    rendererFactory.init(eclipseContext);
 
-		IResourceUtilities resources = new ResourceUtility();
-		eclipseContext.set(IResourceUtilities.class, resources);
+    IContributionFactory factory = new ReflectionContributionFactory();
+    eclipseContext.set(IContributionFactory.class, factory);
 
-		Logger logger = mock(Logger.class);
+    IResourceUtilities resources = new ResourceUtility();
+    eclipseContext.set(IResourceUtilities.class, resources);
 
-		eclipseContext.set(Logger.class, logger);
+    Logger logger = mock(Logger.class);
 
-		app.setContext(eclipseContext);
-		eclipseContext.set(MApplication.class, app);
+    eclipseContext.set(Logger.class, logger);
 
-		modelService = new ModelServiceImpl(eclipseContext);
-		eclipseContext.set(EModelService.class, modelService);
+    app.setContext(eclipseContext);
+    eclipseContext.set(MApplication.class, app);
 
-		CommandServiceImpl commandService = new CommandServiceImpl();
-		CommandManager commandManager = new CommandManager();
-		commandService.setManager(commandManager);
-		eclipseContext.set(ECommandService.class, commandService);
+    modelService = new ModelServiceImpl(eclipseContext);
+    eclipseContext.set(EModelService.class, modelService);
 
-		Display display = new Display();
-		UISynchronize sync = new UISynchronize() {
+    CommandServiceImpl commandService = new CommandServiceImpl();
+    CommandManager commandManager = new CommandManager();
+    commandService.setManager(commandManager);
+    eclipseContext.set(ECommandService.class, commandService);
 
-			@Override
-			public void syncExec(Runnable runnable) {
-				runnable.run();
-			}
+    Display display = new Display();
+    UISynchronize sync = new UISynchronize() {
 
-			@Override
-			public void asyncExec(Runnable runnable) {
-				runnable.run();
+      @Override
+      public void syncExec(Runnable runnable) {
+        runnable.run();
+      }
 
-			}
-		};
-		eclipseContext.set(UISynchronize.class, sync);
+      @Override
+      public void asyncExec(Runnable runnable) {
+        runnable.run();
 
-		IEventBroker eventBroker = mock(IEventBroker.class);
-		eclipseContext.set(IEventBroker.class, eventBroker);
+      }
+    };
+    eclipseContext.set(UISynchronize.class, sync);
 
-		EHandlerService handlerService = new HandlerServiceImpl();
-		eclipseContext.set(EHandlerService.class, handlerService);
+    IEventBroker eventBroker = mock(IEventBroker.class);
+    eclipseContext.set(IEventBroker.class, eventBroker);
 
-		Shell shell = new Shell(display);
-		Composite parent = new Composite(shell, SWT.NONE);
+    EHandlerService handlerService = new HandlerServiceImpl();
+    eclipseContext.set(EHandlerService.class, handlerService);
 
-		IEclipseContext addonStaticContext = EclipseContextFactory.create();
-		for (MAddon addon : app.getAddons()) {
-			addonStaticContext.set(MAddon.class, addon);
-			Object obj = factory.create(addon.getContributionURI(), eclipseContext, addonStaticContext);
-			addon.setObject(obj);
-			if (addon.getElementId().equals("org.eclipse.e4.ui.workbench.commands.model")) {
-				commandAddon = (CommandProcessingAddon) obj;
-			}
-			if (addon.getElementId().equals("org.eclipse.e4.ui.workbench.handler.model")) {
-				handlerAddon = (HandlerProcessingAddon) obj;
-			}
-		}
+    Shell shell = new Shell(display);
+    Composite parent = new Composite(shell, SWT.NONE);
 
-		return this;
-	}
+    IEclipseContext addonStaticContext = EclipseContextFactory.create();
+    for (MAddon addon : app.getAddons()) {
+      addonStaticContext.set(MAddon.class, addon);
+      Object obj = factory.create(addon.getContributionURI(), eclipseContext, addonStaticContext);
+      addon.setObject(obj);
+      if (addon.getElementId().equals("org.eclipse.e4.ui.workbench.commands.model")) {
+        commandAddon = (CommandProcessingAddon) obj;
+      }
+      if (addon.getElementId().equals("org.eclipse.e4.ui.workbench.handler.model")) {
+        handlerAddon = (HandlerProcessingAddon) obj;
+      }
+    }
 
-	
-	public IEclipseContext getEclipseContext() {
-		return eclipseContext;
-	}
+    return this;
+  }
 
-	public WorkbenchRendererFactory getRendererFactory() {
-		return rendererFactory;
-	}
+  public IEclipseContext getEclipseContext() {
+    return eclipseContext;
+  }
 
-	public CommandProcessingAddon getCommandAddon() {
-		return commandAddon;
-	}
+  public WorkbenchRendererFactory getRendererFactory() {
+    return rendererFactory;
+  }
 
-	public HandlerProcessingAddon getHandlerAddon() {
-		return handlerAddon;
-	}
+  public CommandProcessingAddon getCommandAddon() {
+    return commandAddon;
+  }
 
-	public ModelServiceImpl getModelService() {
-		return modelService;
-	}
+  public HandlerProcessingAddon getHandlerAddon() {
+    return handlerAddon;
+  }
 
-	public void additionalDisposes() {
-		disposeNewShells();		
-	}
-	
-	private static Shell[] captureShells() {
-		Shell[] result = new Shell[0];
-		Display currentDisplay = Display.getCurrent();
-		if (currentDisplay != null) {
-			result = currentDisplay.getShells();
-		}
-		return result;
-	}
+  public ModelServiceImpl getModelService() {
+    return modelService;
+  }
 
-	public List<Shell> getNewShells() {
-		List<Shell> newShells = new ArrayList<>();
-		Shell[] shells = captureShells();
-		for (Shell shell : shells) {
-			if (!preExistingShells.contains(shell)) {
-				newShells.add(shell);
-			}
-		}
-		return newShells;
-	}
+  public void additionalDisposes() {
+    disposeNewShells();
+  }
 
-	private void disposeNewShells() {
-		List<Shell> newShells = getNewShells();
-		for (Shell shell : newShells) {
-			shell.dispose();
-		}
-	}
+  private static Shell[] captureShells() {
+    Shell[] result = new Shell[0];
+    Display currentDisplay = Display.getCurrent();
+    if (currentDisplay != null) {
+      result = currentDisplay.getShells();
+    }
+    return result;
+  }
+
+  public List<Shell> getNewShells() {
+    List<Shell> newShells = new ArrayList<>();
+    Shell[] shells = captureShells();
+    for (Shell shell : shells) {
+      if (!preExistingShells.contains(shell)) {
+        newShells.add(shell);
+      }
+    }
+    return newShells;
+  }
+
+  private void disposeNewShells() {
+    List<Shell> newShells = getNewShells();
+    for (Shell shell : newShells) {
+      shell.dispose();
+    }
+  }
 
 }
