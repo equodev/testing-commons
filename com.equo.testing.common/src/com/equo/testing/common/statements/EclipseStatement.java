@@ -26,94 +26,99 @@ import org.osgi.service.application.ApplicationHandle;
 
 public class EclipseStatement extends Statement {
 
-	private Statement base;
-	private Display display;
-	private boolean clenWorkspace;
-	private static EclipseAppLauncher appLauncher = null;
-	private static BundleContext context = null;
-	private static boolean alreadyLaunch = false;
+  private Statement base;
+  private Display display;
+  private boolean cleanWorkspace;
+  private static EclipseAppLauncher appLauncher = null;
+  private static BundleContext context = null;
+  private static boolean alreadyLaunch = false;
 
-	public EclipseStatement(Statement base, Display display, boolean clenWorkspace) {
-		super();
-		this.base = base;
-		this.display = display;
-		this.clenWorkspace = clenWorkspace;
+  /**
+   * Parameterized constructor.
+   */
+  public EclipseStatement(Statement base, Display display, boolean cleanWorkspace) {
+    super();
+    this.base = base;
+    this.display = display;
+    this.cleanWorkspace = cleanWorkspace;
 
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> closeIDE(display)));
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> closeIde()));
 
-	}
+  }
 
-	@Override
-	public void evaluate() throws Throwable {
-		launchIDE(display);
-		alreadyLaunch = true;
-		if (clenWorkspace) {
-			cleanWorkspace(display);
-		}
-		try {
-			base.evaluate();
-		} finally {
-			closeIDE(display);
-		}
-	}
+  @Override
+  public void evaluate() throws Throwable {
+    launchIde(display);
+    alreadyLaunch = true;
+    if (cleanWorkspace) {
+      cleanWorkspace(display);
+    }
+    try {
+      base.evaluate();
+    } finally {
+      closeIde();
+    }
+  }
 
-	public void cleanWorkspace(Display display) {
-		CleanWorkspaceRequirement cleanWS = new CleanWorkspaceRequirement();
-		cleanWS.fulfill();
+  public void cleanWorkspace(Display display) {
+    CleanWorkspaceRequirement cleanWS = new CleanWorkspaceRequirement();
+    cleanWS.fulfill();
+  }
 
-	}
+  private void launchIde(Display display) {
+    Map<String, String> props = new HashMap<String, String>();
+    props.put("eclipse.application.launchDefault", "true");
+    EclipseStarter.setInitialProperties(props);
 
-	private void launchIDE(Display display) {
+    display.asyncExec(() -> {
 
-		Map<String, String> props = new HashMap<String, String>();
-		props.put("eclipse.application.launchDefault", "true");
-		EclipseStarter.setInitialProperties(props);
+      //IMPORTANT: Don't deletes the next sysout, is there to force early startup 
+      // of org.eclipse.equinox.app bundle.
+      System.out.println(EclipseAppContainer.class.getName());
 
-		display.asyncExec(() -> {
+      // create the ApplicationLauncher and register it as a service
+      if (!alreadyLaunch) {
+        context = FrameworkUtil.getBundle(this.getClass()).getBundleContext();
 
-			//IMPORTANT: Don't deletes the next sysout, is there to force early startup 
-			// of org.eclipse.equinox.app bundle.
-			System.out.println(EclipseAppContainer.class.getName());
+        ServiceReference<FrameworkLog> logRef = context.getServiceReference(FrameworkLog.class);
+        FrameworkLog log = context.getService(logRef);
+        ServiceReference<EnvironmentInfo> configRef =
+            context.getServiceReference(EnvironmentInfo.class);
+        EquinoxConfiguration equinoxConfig = (EquinoxConfiguration) context.getService(configRef);
+        appLauncher = new EclipseAppLauncher(context, false, false, log, equinoxConfig);
+        context.registerService(ApplicationLauncher.class.getName(), appLauncher, null);
+      }
+      // Must start the launcher AFTER service registration because this method
+      // blocks and runs the application on the current thread. This method
+      // will return only after the application has stopped.
+      try {
+        if (alreadyLaunch) {
+          appLauncher.reStart(null);
+        } else {
+          appLauncher.start(null);
+        }
 
-			// create the ApplicationLauncher and register it as a service
-			if (!alreadyLaunch) {
-				context = FrameworkUtil.getBundle(this.getClass()).getBundleContext();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
 
-				ServiceReference<FrameworkLog> logRef = context.getServiceReference(FrameworkLog.class);
-				FrameworkLog log = context.getService(logRef);
-				ServiceReference<EnvironmentInfo> configRef = context.getServiceReference(EnvironmentInfo.class);
-				EquinoxConfiguration equinoxConfig = (EquinoxConfiguration) context.getService(configRef);
-				appLauncher = new EclipseAppLauncher(context, false, false, log, equinoxConfig);
-				context.registerService(ApplicationLauncher.class.getName(), appLauncher, null);
-			}
-			// Must start the launcher AFTER service registration because this method
-			// blocks and runs the application on the current thread. This method
-			// will return only after the application has stopped.
-			try {
-				if (alreadyLaunch) {
-					appLauncher.reStart(null);
-				} else {
-					appLauncher.start(null);
-				}
+    });
 
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+    new WaitUntil(new ActiveShellExists(), TimePeriod.VERY_LONG);
+  }
 
-		});
-
-		new WaitUntil(new ActiveShellExists(), TimePeriod.VERY_LONG);
-	}
-
-	public void closeIDE(Display display) {
-		IEclipseContext eclipseContext = EclipseContextFactory
-				.getServiceContext(FrameworkUtil.getBundle(this.getClass()).getBundleContext());
-		if (eclipseContext.containsKey(ApplicationHandle.class)) {
-			ApplicationHandle applicationHandle = eclipseContext.get(ApplicationHandle.class);
-			if (applicationHandle != null) {
-				((EclipseAppHandle) applicationHandle).stop();
-			}
-		}
-	}
+  /**
+   * Closes the IDE using the application handle obtained from the eclipse context.
+   */
+  public void closeIde() {
+    IEclipseContext eclipseContext = EclipseContextFactory
+        .getServiceContext(FrameworkUtil.getBundle(this.getClass()).getBundleContext());
+    if (eclipseContext.containsKey(ApplicationHandle.class)) {
+      ApplicationHandle applicationHandle = eclipseContext.get(ApplicationHandle.class);
+      if (applicationHandle != null) {
+        ((EclipseAppHandle) applicationHandle).stop();
+      }
+    }
+  }
 
 }

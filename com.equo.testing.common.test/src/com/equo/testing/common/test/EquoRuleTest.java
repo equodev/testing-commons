@@ -8,12 +8,12 @@ import org.junit.Test;
 import com.equo.testing.common.util.EquoRule;
 
 public class EquoRuleTest {
-	
-	@Rule
-	public EquoRule rule = new EquoRule(this).runInNonUIThread(); 
-	
-	@Test
-	public void ruleRunInNonUIThreadTest() {
-		assertFalse(Thread.currentThread().getName().equals("main"));
-	}
+
+  @Rule
+  public EquoRule rule = new EquoRule(this).runInNonUiThread();
+
+  @Test
+  public void ruleRunInNonUIThreadTest() {
+    assertFalse(Thread.currentThread().getName().equals("main"));
+  }
 }

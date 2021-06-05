@@ -8,27 +8,24 @@ import org.osgi.framework.FrameworkUtil;
 
 public class InjectStatement extends Statement {
 
-	private Statement base;
-	private Object testCase;
+  private Statement base;
+  private Object testCase;
 
-	public InjectStatement(Statement base, Object testCase) {
-		this.base = base;
-		this.testCase = testCase;
-	}
+  public InjectStatement(Statement base, Object testCase) {
+    this.base = base;
+    this.testCase = testCase;
+  }
 
-	@Override
-	public void evaluate() throws Throwable {
-		inject(testCase);
-		try {
-			base.evaluate();
-		} finally {
-		}
-	}
+  @Override
+  public void evaluate() throws Throwable {
+    inject(testCase);
+    base.evaluate();
+  }
 
-	private void inject(Object caseTest) {
-		IEclipseContext eclipseContext = EclipseContextFactory
-				.getServiceContext(FrameworkUtil.getBundle(caseTest.getClass()).getBundleContext());
-		ContextInjectionFactory.inject(caseTest, eclipseContext);
-	}
+  private void inject(Object caseTest) {
+    IEclipseContext eclipseContext = EclipseContextFactory
+        .getServiceContext(FrameworkUtil.getBundle(caseTest.getClass()).getBundleContext());
+    ContextInjectionFactory.inject(caseTest, eclipseContext);
+  }
 
 }
