@@ -19,10 +19,7 @@ public class InjectStatement extends Statement {
   @Override
   public void evaluate() throws Throwable {
     inject(testCase);
-    try {
-      base.evaluate();
-    } finally {
-    }
+    base.evaluate();
   }
 
   private void inject(Object caseTest) {

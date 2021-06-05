@@ -20,7 +20,7 @@ public class EclipseRuleTest {
   public TestName name = new TestName();
 
   @Rule
-  public EclipseRule eclipseRule = new EclipseRule(this).runInNonUIThread().withCleanWorspace();
+  public EclipseRule eclipseRule = new EclipseRule(this).runInNonUiThread().withCleanWorspace();
 
   @Test
   public void ruleRunWithoutExceptionsTest() {

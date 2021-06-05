@@ -14,10 +14,13 @@ public abstract class AbstractEquoRule<T extends AbstractEquoRule<T>> implements
 
   private Object testCase;
 
-  private boolean runInNonUIThread;
+  private boolean runInNonUiThread;
   private boolean displayOwner;
   private Display display;
 
+  /**
+   * Parameterized constructor.
+   */
   public AbstractEquoRule(Object testCase) {
     super();
     this.testCase = testCase;
@@ -31,7 +34,7 @@ public abstract class AbstractEquoRule<T extends AbstractEquoRule<T>> implements
     if (optStatement.isPresent()) {
       tempResult = optStatement.get();
     }
-    if (runInNonUIThread) {
+    if (runInNonUiThread) {
       tempResult = new RunInThreadStatement(tempResult, getDisplay());
     }
 
@@ -50,6 +53,10 @@ public abstract class AbstractEquoRule<T extends AbstractEquoRule<T>> implements
 
   protected abstract Optional<Statement> additionalStatements(Statement base);
 
+  /**
+   * Lazy initializes display attribute and returns it.
+   * @return display associated with this rule.
+   */
   public Display getDisplay() {
     if (display == null) {
       displayOwner = Display.getCurrent() == null;
@@ -68,21 +75,27 @@ public abstract class AbstractEquoRule<T extends AbstractEquoRule<T>> implements
   }
 
   @SuppressWarnings("unchecked")
-  public T runInNonUIThread() {
-    runInNonUIThread = true;
+  public T runInNonUiThread() {
+    runInNonUiThread = true;
     return (T) this;
   }
 
+  /**
+   * Disposes the display previously flushing pending events.
+   */
   public final void dispose() {
-    if (runInNonUIThread) {
+    if (runInNonUiThread) {
       flushPendingEvents();
     }
     additionalDisposes();
-    //		disposeDisplay();
+    // disposeDisplay();
   }
 
   protected abstract void additionalDisposes();
 
+  /** 
+   * Flushes pending events in current display.
+   */
   public void flushPendingEvents() {
     while (Display.getCurrent() != null && !Display.getCurrent().isDisposed()
         && Display.getCurrent().readAndDispatch()) {

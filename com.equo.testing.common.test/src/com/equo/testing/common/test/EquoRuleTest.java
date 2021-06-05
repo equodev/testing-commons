@@ -10,7 +10,7 @@ import com.equo.testing.common.util.EquoRule;
 public class EquoRuleTest {
 
   @Rule
-  public EquoRule rule = new EquoRule(this).runInNonUIThread();
+  public EquoRule rule = new EquoRule(this).runInNonUiThread();
 
   @Test
   public void ruleRunInNonUIThreadTest() {

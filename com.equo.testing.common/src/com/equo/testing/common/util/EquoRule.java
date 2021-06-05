@@ -71,6 +71,11 @@ public class EquoRule extends AbstractEquoRule<EquoRule> {
     return withApplicationContext(app, new WorkbenchRendererFactory());
   }
 
+  /**
+   * Initializes the application context using the given application model and
+   * workbench renderer factory.
+   * @return this
+   */
   @SuppressWarnings({ "rawtypes", "unused" })
   public EquoRule withApplicationContext(MApplication app,
       WorkbenchRendererFactory rendererFactory) {
@@ -175,6 +180,10 @@ public class EquoRule extends AbstractEquoRule<EquoRule> {
     return result;
   }
 
+  /**
+   * Captures shells from the current display and returns only the newly created
+   * shells.
+   */
   public List<Shell> getNewShells() {
     List<Shell> newShells = new ArrayList<>();
     Shell[] shells = captureShells();

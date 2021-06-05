@@ -28,43 +28,44 @@ public class EclipseStatement extends Statement {
 
   private Statement base;
   private Display display;
-  private boolean clenWorkspace;
+  private boolean cleanWorkspace;
   private static EclipseAppLauncher appLauncher = null;
   private static BundleContext context = null;
   private static boolean alreadyLaunch = false;
 
-  public EclipseStatement(Statement base, Display display, boolean clenWorkspace) {
+  /**
+   * Parameterized constructor.
+   */
+  public EclipseStatement(Statement base, Display display, boolean cleanWorkspace) {
     super();
     this.base = base;
     this.display = display;
-    this.clenWorkspace = clenWorkspace;
+    this.cleanWorkspace = cleanWorkspace;
 
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> closeIDE(display)));
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> closeIde()));
 
   }
 
   @Override
   public void evaluate() throws Throwable {
-    launchIDE(display);
+    launchIde(display);
     alreadyLaunch = true;
-    if (clenWorkspace) {
+    if (cleanWorkspace) {
       cleanWorkspace(display);
     }
     try {
       base.evaluate();
     } finally {
-      closeIDE(display);
+      closeIde();
     }
   }
 
   public void cleanWorkspace(Display display) {
     CleanWorkspaceRequirement cleanWS = new CleanWorkspaceRequirement();
     cleanWS.fulfill();
-
   }
 
-  private void launchIDE(Display display) {
-
+  private void launchIde(Display display) {
     Map<String, String> props = new HashMap<String, String>();
     props.put("eclipse.application.launchDefault", "true");
     EclipseStarter.setInitialProperties(props);
@@ -106,7 +107,10 @@ public class EclipseStatement extends Statement {
     new WaitUntil(new ActiveShellExists(), TimePeriod.VERY_LONG);
   }
 
-  public void closeIDE(Display display) {
+  /**
+   * Closes the IDE using the application handle obtained from the eclipse context.
+   */
+  public void closeIde() {
     IEclipseContext eclipseContext = EclipseContextFactory
         .getServiceContext(FrameworkUtil.getBundle(this.getClass()).getBundleContext());
     if (eclipseContext.containsKey(ApplicationHandle.class)) {
