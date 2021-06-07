@@ -12,4 +12,6 @@ vmargs:${if;${matches;${tolower;${os.name}};.*mac.*};-XstartOnFirstThread;}
     osgi.instance.area=.rt/workspace,\
     perspective=Java,\
     com.apple.mrj.application.apple.menu.about.name=${def;appName}
-    
+
+# Avoid releasing release test bundles
+-releaserepo: 

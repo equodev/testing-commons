@@ -1,3 +1,6 @@
 -javaagent: true
 
 -runvm.coverage: -javaagent:${repo;org.jacoco:org.jacoco.agent:jar:runtime;0.8.6}=destfile=generated/jacoco/test.exec
+
+# Avoid releasing release test bundles
+-releaserepo: 

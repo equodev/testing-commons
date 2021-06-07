@@ -1,25 +1,8 @@
--include ${build}/testbundle.bnd
-
 Bundle-Version: 1.0.0.${tstamp}
 Export-Package: \
     com.equo.testing.common.support,\
     com.equo.testing.common.statements,\
     com.equo.testing.common.util
-
-eclipseApplication=org.eclipse.ui.ide.workbench
-vmargs:${if;${matches;${tolower;${os.name}};.*mac.*};-XstartOnFirstThread;}
-
-
--runproperties: \
-    eclipse.application=${def;eclipseApplication;org.eclipse.e4.ui.workbench.swt.E4Application},\
-    eclipse.consoleLog=true,\
-    launch.keep=false,\
-    launch.storage.dir=.rt/cfg,\
-    osgi.instance.area=.rt/workspace,\
-    perspective=Java,\
-    com.apple.mrj.application.apple.menu.about.name=${def;appName}
-   
-
 
 -buildpath.graphics: ${if;${matches;${tolower;${os.name}};.*win.*};org.eclipse.swt.win32.win32.x86_64;${if;${matches;${tolower;${os.name}};.*mac.*};org.eclipse.swt.cocoa.macosx.x86_64;org.eclipse.swt.gtk.linux.x86_64}}
 
@@ -54,12 +37,11 @@ vmargs:${if;${matches;${tolower;${os.name}};.*mac.*};-XstartOnFirstThread;}
 	org.eclipse.jface,\
 	org.eclipse.ui.workbench,\
 	org.eclipse.ui
-    
- -runbundles.common: \
- 	org.eclipse.reddeer.direct; bundle-version='[2.9.0,2.9.1)',\
-    org.eclipse.reddeer.requirements; bundle-version='[2.9.0,2.9.1)',\
-    org.eclipse.reddeer.workbench; bundle-version='[2.9.0,2.9.1)',\
-	org.eclipse.reddeer.workbench.core;bundle-version='[2.9.0,2.9.1)',\
-	org.eclipse.reddeer.common;bundle-version='[2.9.0,2.9.1)',\
-	org.eclipse.reddeer.junit; bundle-version='[2.9.0,2.9.1)'
- 	 
+
+-buildpath.test: \
+    osgi.cmpn,\
+    org.eclipse.osgi,\
+    assertj-core;version=3.15.0,\
+    org.eclipse.e4.core.contexts,\
+    javax.inject,\
+    org.eclipse.e4.core.di
