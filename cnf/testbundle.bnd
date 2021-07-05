@@ -67,6 +67,7 @@
     io.netty.all;version='[4.0.44,4.0.45)',\
     com.equo.aer.api;version=latest,\
     com.equo.aer.internal.api;version=latest,\
+    com.equo.comm.api;version=latest,\
     com.equo.contribution.api;version=latest,\
     com.equo.contribution.provider;version=latest,\
     com.equo.server.provider;version=latest,\
@@ -76,7 +77,6 @@
     com.equo.logging.client.core.provider;version=latest,\
     com.equo.server.api;version=latest,\
     com.equo.server.offline.api;version=latest,\
-    com.equo.ws.api;version=latest,\
     com.equo.ws.provider;version=latest,\
     javax.inject;version='[1.0.0,1.0.1)',\
     org.apache.commons.jxpath;version='[1.3.0,1.3.1)',\
