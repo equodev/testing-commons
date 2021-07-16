@@ -1,3 +1,5 @@
+javac.source: 1.8
+javac.target: 1.8
 javac.debug:            on
 
 -include: ${workspace}/gradle.properties
