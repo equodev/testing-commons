@@ -19,4 +19,4 @@
         cache = ~/.bnd/cache/p2plugins
 
 -releaserepo: Release
--baselinerepo: Release
+-buildrepo: Release
