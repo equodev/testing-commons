@@ -2,6 +2,7 @@
 
 # Avoid releasing release test bundles
 -releaserepo: 
+-buildrepo: 
 
 -runblacklist.core: \
     bnd.identity;id='org.eclipse.rap.*'
