@@ -128,7 +128,6 @@ public class EquoRule extends AbstractEquoRule<EquoRule> {
     commandService.setManager(commandManager);
     eclipseContext.set(ECommandService.class, commandService);
 
-    Display display = new Display();
     UISynchronize sync = new UISynchronize() {
 
       @Override
@@ -150,8 +149,9 @@ public class EquoRule extends AbstractEquoRule<EquoRule> {
     EHandlerService handlerService = new HandlerServiceImpl();
     eclipseContext.set(EHandlerService.class, handlerService);
 
-    Shell shell = new Shell(display);
-    Composite parent = new Composite(shell, SWT.NONE);
+    getDisplay().syncExec(() -> {
+      Composite parent = new Composite(createShell(), SWT.NONE);
+    });
 
     IEclipseContext addonStaticContext = EclipseContextFactory.create();
     for (MAddon addon : app.getAddons()) {
