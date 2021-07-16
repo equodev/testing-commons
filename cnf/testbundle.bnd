@@ -1,6 +1,6 @@
 -runfw: org.eclipse.osgi;version='[3.15.100.v20191114-1701,3.15.100.v20191114-1701]'
 
-# Avoid releasing release test bundles
+# Avoid releasing test bundles
 -releaserepo: 
 -buildrepo: 
 
