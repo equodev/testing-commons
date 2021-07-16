@@ -21,7 +21,7 @@ Export-Package: \
 	org.eclipse.core.commands,\
 	org.mockito.mockito-all,\
 	org.eclipse.e4.ui.workbench.renderers.swt,\
-	org.apache.servicemix.bundles.junit;version=4.12,\
+	org.apache.servicemix.bundles.junit;version='4.12',\
 	org.eclipse.reddeer.common,\
 	org.eclipse.reddeer.core,\
 	org.eclipse.reddeer.core.source,\
@@ -36,7 +36,10 @@ Export-Package: \
 	org.eclipse.reddeer.workbench.source,\
 	org.eclipse.jface,\
 	org.eclipse.ui.workbench,\
-	org.eclipse.ui
+	org.eclipse.ui,\
+	org.eclipse.emf.ecore,\
+	org.eclipse.emf.common,\
+	org.eclipse.emf.ecore.xmi
 
 -buildpath.test: \
     osgi.cmpn,\

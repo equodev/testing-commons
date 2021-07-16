@@ -36,7 +36,7 @@ public abstract class AbstractEquoRule<T extends AbstractEquoRule<T>> implements
 
   private Object testCase;
 
-  private boolean runInNonUiThread;
+  protected boolean runInNonUiThread;
   private boolean displayOwner;
   private Display display;
 
@@ -115,7 +115,7 @@ public abstract class AbstractEquoRule<T extends AbstractEquoRule<T>> implements
 
   protected abstract void additionalDisposes();
 
-  /** 
+  /**
    * Flushes pending events in current display.
    */
   public void flushPendingEvents() {
