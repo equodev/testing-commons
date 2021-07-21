@@ -46,6 +46,9 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.application.ApplicationHandle;
 
+/**
+ * Statement that launches an Eclipse based app.
+ */
 public class EclipseStatement extends Statement {
 
   private Statement base;

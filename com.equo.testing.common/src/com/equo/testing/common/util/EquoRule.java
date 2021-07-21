@@ -57,6 +57,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.runners.model.Statement;
 import org.osgi.framework.FrameworkUtil;
 
+/**
+ * Rule that makes possible the initialization of an application context.
+ */
 public class EquoRule extends AbstractEquoRule<EquoRule> {
 
   private IEclipseContext eclipseContext;
