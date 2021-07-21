@@ -9,7 +9,6 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.internal.workbench.E4Workbench;
 import org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine;
 import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.workbench.IPresentationEngine;
 import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.eclipse.swt.widgets.Display;
 import org.junit.runners.model.Statement;
@@ -28,6 +27,8 @@ public class RunWithE4ModelStatement extends Statement {
     this.baseStatement = baseStatement;
     this.app = app;
     this.context = context;
+
+    // To ensure we're using the same display we have in the tests to render the UI.
     context.set(Display.class, display);
     this.display = display;
   }
@@ -72,14 +73,12 @@ public class RunWithE4ModelStatement extends Statement {
         while (display != null && !display.isDisposed()) {
           Thread.sleep(1500);
           ensureClose();
-          System.out.println("test-ensure-close");
         }
       } catch (InterruptedException e) {
         RunWithE4ModelStatement.this.throwable = e;
       }
     });
-    IPresentationEngine renderer = ContextInjectionFactory.make(PartRenderingEngine.class, context);
-    context.set(IPresentationEngine.class, renderer);
+    ContextInjectionFactory.make(PartRenderingEngine.class, context);
     E4Workbench workbench = (E4Workbench) context.get(IWorkbench.class);
     workbench.createAndRunUI(app);
   }

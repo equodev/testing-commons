@@ -97,7 +97,7 @@ public class EquoRule extends AbstractEquoRule<EquoRule> {
   }
 
   public EquoRule withApplicationContext(MApplication app) {
-    return withApplicationContext(app, new WorkbenchRendererFactory());
+    return withApplicationContext(app, null);
   }
 
   /**
@@ -112,7 +112,9 @@ public class EquoRule extends AbstractEquoRule<EquoRule> {
     eclipseContext = EclipseContextFactory
         .getServiceContext(FrameworkUtil.getBundle(this.getClass()).getBundleContext());
 
-    rendererFactory.init(eclipseContext);
+    if (rendererFactory != null) {
+      rendererFactory.init(eclipseContext);
+    }
 
     IContributionFactory factory = new ReflectionContributionFactory();
     eclipseContext.set(IContributionFactory.class, factory);
@@ -206,19 +208,19 @@ public class EquoRule extends AbstractEquoRule<EquoRule> {
     disposeNewShells();
   }
 
+  /**
+   * Initializes an E4Workbench. IEventBroker is mocked so UI events will not be
+   * notified from the model to the renderers. Internally calls
+   * withApplicationContext with the application obtained from the model. The
+   * renderer factory is initialized by the IPresentationEngine.
+   * @param  modelPath path to the e4 model to be used
+   * @return
+   */
   public EquoRule runWithE4Model(String modelPath) {
-    return runWithE4Model(modelPath, null);
-  }
-
-  public EquoRule runWithE4Model(String modelPath, WorkbenchRendererFactory factory) {
     runWithE4Model = true;
     runInNonUiThread = false;
     this.app = ModelHelper.getModelApplication(modelPath);
-    if (factory != null) {
-      withApplicationContext(app, factory);
-    } else {
-      withApplicationContext(app);
-    }
+    withApplicationContext(app);
     return this;
   }
 
