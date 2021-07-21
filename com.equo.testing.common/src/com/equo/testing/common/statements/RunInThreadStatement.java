@@ -29,6 +29,10 @@ import java.util.concurrent.Future;
 import org.eclipse.swt.widgets.Display;
 import org.junit.runners.model.Statement;
 
+/**
+ * Statement to run test in current thread. Manages the display events to be
+ * readed and dispatched.
+ */
 public class RunInThreadStatement extends Statement {
 
   private final Statement baseStatement;

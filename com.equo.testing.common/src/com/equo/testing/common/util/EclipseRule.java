@@ -28,24 +28,27 @@ import org.junit.runners.model.Statement;
 
 import com.equo.testing.common.statements.EclipseStatement;
 
+/**
+ * Rule that launches an Eclipse app for the test. 
+ */
 public class EclipseRule extends AbstractEquoRule<EclipseRule> {
 
   private EclipseStatement eclipseStatement;
-  private boolean withCleanWorspace;
+  private boolean withCleanWorkspace;
 
   public EclipseRule(Object testCase) {
     super(testCase);
-    this.withCleanWorspace = false;
+    this.withCleanWorkspace = false;
   }
 
   @Override
   protected Optional<Statement> additionalStatements(Statement base) {
-    eclipseStatement = new EclipseStatement(base, getDisplay(), withCleanWorspace);
+    eclipseStatement = new EclipseStatement(base, getDisplay(), withCleanWorkspace);
     return Optional.of(eclipseStatement);
   }
 
-  public EclipseRule withCleanWorspace() {
-    this.withCleanWorspace = true;
+  public EclipseRule withCleanWorkspace() {
+    this.withCleanWorkspace = true;
     return this;
   }
 

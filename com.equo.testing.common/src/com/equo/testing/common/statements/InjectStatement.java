@@ -28,6 +28,9 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.junit.runners.model.Statement;
 import org.osgi.framework.FrameworkUtil;
 
+/**
+ * Statement that injects a context into a given object.
+ */
 public class InjectStatement extends Statement {
 
   private Statement base;
