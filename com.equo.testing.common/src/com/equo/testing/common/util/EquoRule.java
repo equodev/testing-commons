@@ -217,7 +217,7 @@ public class EquoRule extends AbstractEquoRule<EquoRule> {
    * withApplicationContext with the application obtained from the model. The
    * renderer factory is initialized by the IPresentationEngine.
    * @param  modelPath path to the e4 model to be used
-   * @return
+   * @return this
    */
   public EquoRule runWithE4Model(String modelPath) {
     runWithE4Model = true;

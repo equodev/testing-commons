@@ -13,6 +13,10 @@ import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.eclipse.swt.widgets.Display;
 import org.junit.runners.model.Statement;
 
+/**
+ * Statement to initialize an E4 basic environment to run tests in. Starts an
+ * IPresentationEngine and it in turn handles the read and dispatch loop.
+ */
 public class RunWithE4ModelStatement extends Statement {
 
   private final Statement baseStatement;
@@ -22,6 +26,14 @@ public class RunWithE4ModelStatement extends Statement {
   private IEclipseContext context;
   private Display display;
 
+  /**
+   * Base constructor. Initializes attributes and sets the given Display to the
+   * given context.
+   * @param baseStatement statement that this statement runs after.
+   * @param app           MApplication to create and run the UI from.
+   * @param context       Eclipse context to use.
+   * @param display       Display to use.
+   */
   public RunWithE4ModelStatement(Statement baseStatement, MApplication app, IEclipseContext context,
       Display display) {
     this.baseStatement = baseStatement;
