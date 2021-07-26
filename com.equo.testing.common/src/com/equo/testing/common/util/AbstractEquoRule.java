@@ -32,6 +32,9 @@ import org.junit.runners.model.Statement;
 import com.equo.testing.common.statements.InjectStatement;
 import com.equo.testing.common.statements.RunInThreadStatement;
 
+/**
+ * An abstraction for all Equo rules.
+ */
 public abstract class AbstractEquoRule<T extends AbstractEquoRule<T>> implements TestRule {
 
   private Object testCase;

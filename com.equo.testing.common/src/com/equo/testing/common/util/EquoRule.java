@@ -62,6 +62,9 @@ import org.osgi.framework.FrameworkUtil;
 
 import com.equo.testing.common.statements.RunWithE4ModelStatement;
 
+/**
+ * Rule that makes possible the initialization of an application context.
+ */
 public class EquoRule extends AbstractEquoRule<EquoRule> {
 
   private IEclipseContext eclipseContext;
