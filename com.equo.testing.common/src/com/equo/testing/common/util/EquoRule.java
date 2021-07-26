@@ -40,6 +40,7 @@ import org.eclipse.e4.core.services.contributions.IContributionFactory;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.di.UISynchronize;
+import org.eclipse.e4.ui.internal.workbench.E4Workbench;
 import org.eclipse.e4.ui.internal.workbench.ModelServiceImpl;
 import org.eclipse.e4.ui.internal.workbench.ReflectionContributionFactory;
 import org.eclipse.e4.ui.internal.workbench.addons.CommandProcessingAddon;
@@ -47,7 +48,9 @@ import org.eclipse.e4.ui.internal.workbench.addons.HandlerProcessingAddon;
 import org.eclipse.e4.ui.internal.workbench.swt.ResourceUtility;
 import org.eclipse.e4.ui.model.application.MAddon;
 import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.MApplicationElement;
 import org.eclipse.e4.ui.workbench.IResourceUtilities;
+import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.renderers.swt.WorkbenchRendererFactory;
 import org.eclipse.swt.SWT;
@@ -57,22 +60,22 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.runners.model.Statement;
 import org.osgi.framework.FrameworkUtil;
 
+import com.equo.testing.common.statements.RunWithE4ModelStatement;
+
 /**
  * Rule that makes possible the initialization of an application context.
  */
 public class EquoRule extends AbstractEquoRule<EquoRule> {
 
   private IEclipseContext eclipseContext;
-
+  private MApplication app;
   private WorkbenchRendererFactory rendererFactory;
-
   private CommandProcessingAddon commandAddon;
-
   private HandlerProcessingAddon handlerAddon;
-
   private ModelServiceImpl modelService;
-
   private List<Shell> preExistingShells;
+
+  private boolean runWithE4Model;
 
   public EquoRule(Object testCase) {
     super(testCase);
@@ -81,6 +84,10 @@ public class EquoRule extends AbstractEquoRule<EquoRule> {
 
   @Override
   protected Optional<Statement> additionalStatements(Statement base) {
+    if (runWithE4Model) {
+      return Optional.of(new RunWithE4ModelStatement(base, app, eclipseContext, getDisplay()));
+    }
+
     return Optional.empty();
   }
 
@@ -93,7 +100,7 @@ public class EquoRule extends AbstractEquoRule<EquoRule> {
   }
 
   public EquoRule withApplicationContext(MApplication app) {
-    return withApplicationContext(app, new WorkbenchRendererFactory());
+    return withApplicationContext(app, null);
   }
 
   /**
@@ -108,7 +115,9 @@ public class EquoRule extends AbstractEquoRule<EquoRule> {
     eclipseContext = EclipseContextFactory
         .getServiceContext(FrameworkUtil.getBundle(this.getClass()).getBundleContext());
 
-    rendererFactory.init(eclipseContext);
+    if (rendererFactory != null) {
+      rendererFactory.init(eclipseContext);
+    }
 
     IContributionFactory factory = new ReflectionContributionFactory();
     eclipseContext.set(IContributionFactory.class, factory);
@@ -126,14 +135,16 @@ public class EquoRule extends AbstractEquoRule<EquoRule> {
     modelService = new ModelServiceImpl(eclipseContext);
     eclipseContext.set(EModelService.class, modelService);
 
+    if (runWithE4Model) {
+      IWorkbench wb = new E4Workbench((MApplicationElement) app, eclipseContext);
+    }
+
     CommandServiceImpl commandService = new CommandServiceImpl();
     CommandManager commandManager = new CommandManager();
     commandService.setManager(commandManager);
     eclipseContext.set(ECommandService.class, commandService);
 
-    Display display = new Display();
     UISynchronize sync = new UISynchronize() {
-
       @Override
       public void syncExec(Runnable runnable) {
         runnable.run();
@@ -142,7 +153,6 @@ public class EquoRule extends AbstractEquoRule<EquoRule> {
       @Override
       public void asyncExec(Runnable runnable) {
         runnable.run();
-
       }
     };
     eclipseContext.set(UISynchronize.class, sync);
@@ -153,8 +163,9 @@ public class EquoRule extends AbstractEquoRule<EquoRule> {
     EHandlerService handlerService = new HandlerServiceImpl();
     eclipseContext.set(EHandlerService.class, handlerService);
 
-    Shell shell = new Shell(display);
-    Composite parent = new Composite(shell, SWT.NONE);
+    getDisplay().syncExec(() -> {
+      Composite parent = new Composite(createShell(), SWT.NONE);
+    });
 
     IEclipseContext addonStaticContext = EclipseContextFactory.create();
     for (MAddon addon : app.getAddons()) {
@@ -192,8 +203,28 @@ public class EquoRule extends AbstractEquoRule<EquoRule> {
     return modelService;
   }
 
+  public MApplication getMApplication() {
+    return app;
+  }
+
   public void additionalDisposes() {
     disposeNewShells();
+  }
+
+  /**
+   * Initializes an E4Workbench. IEventBroker is mocked so UI events will not be
+   * notified from the model to the renderers. Internally calls
+   * withApplicationContext with the application obtained from the model. The
+   * renderer factory is initialized by the IPresentationEngine.
+   * @param  modelPath path to the e4 model to be used
+   * @return this
+   */
+  public EquoRule runWithE4Model(String modelPath) {
+    runWithE4Model = true;
+    runInNonUiThread = false;
+    this.app = ModelHelper.getModelApplication(modelPath);
+    withApplicationContext(app);
+    return this;
   }
 
   private static Shell[] captureShells() {

@@ -13,5 +13,6 @@ vmargs:${if;${matches;${tolower;${os.name}};.*mac.*};-XstartOnFirstThread;}
     perspective=Java,\
     com.apple.mrj.application.apple.menu.about.name=${def;appName}
 
-# Avoid releasing release test bundles
+# Avoid releasing test bundles
 -releaserepo: 
+-buildrepo:

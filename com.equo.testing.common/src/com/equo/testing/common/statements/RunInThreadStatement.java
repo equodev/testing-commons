@@ -31,7 +31,7 @@ import org.junit.runners.model.Statement;
 
 /**
  * Statement to run test in current thread. Manages the display events to be
- * readed and dispatched.
+ * read and dispatched.
  */
 public class RunInThreadStatement extends Statement {
 
