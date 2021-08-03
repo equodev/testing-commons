@@ -72,11 +72,34 @@ public class RunInThreadStatement extends Statement {
   }
 
   private void waitTillFinished() {
+    wakeDisplayWhenFutureIsDone();
+
     while (!future.isDone()) {
       if (!display.isDisposed() && !display.readAndDispatch()) {
         display.sleep();
       }
     }
+  }
+
+  private void wakeDisplayWhenFutureIsDone() {
+    new Thread(() -> {
+      while (!future.isDone()) {
+        try {
+          Thread.sleep(200);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+      if (!display.isDisposed()) {
+        display.wake();
+        try {
+          Thread.sleep(100);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+        display.wake();
+      }
+    }).start();
   }
 
   private void rethrowAssertionsAndErrors() throws Throwable {
