@@ -1,4 +1,4 @@
-Bundle-Version: 2.0.0.${tstamp}
+Bundle-Version: 2.0.1.${tstamp}
 Export-Package: \
     com.equo.testing.common.support,\
     com.equo.testing.common.statements,\
@@ -39,7 +39,8 @@ Export-Package: \
 	org.eclipse.ui,\
 	org.eclipse.emf.ecore,\
 	org.eclipse.emf.common,\
-	org.eclipse.emf.ecore.xmi
+	org.eclipse.emf.ecore.xmi,\
+	org.eclipse.reddeer.eclipse
 
 -buildpath.test: \
     osgi.cmpn,\

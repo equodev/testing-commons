@@ -92,11 +92,13 @@ public class RunInThreadStatement extends Statement {
       }
       if (!display.isDisposed()) {
         display.wake();
-        try {
-          Thread.sleep(100);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+      }
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      if (!display.isDisposed()) {
         display.wake();
       }
     }).start();

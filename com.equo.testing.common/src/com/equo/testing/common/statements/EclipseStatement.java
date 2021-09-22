@@ -38,6 +38,7 @@ import org.eclipse.osgi.service.runnable.ApplicationLauncher;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.core.condition.ActiveShellExists;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
 import org.eclipse.swt.widgets.Display;
 import org.junit.runners.model.Statement;
@@ -85,7 +86,11 @@ public class EclipseStatement extends Statement {
     }
   }
 
+  /**
+   * Cleans the workspace to run a new test.
+   */
   public void cleanWorkspace(Display display) {
+    new JavaPerspective().open();
     CleanWorkspaceRequirement cleanWS = new CleanWorkspaceRequirement();
     cleanWS.fulfill();
   }
