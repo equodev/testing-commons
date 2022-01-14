@@ -90,6 +90,7 @@ public abstract class AbstractEquoRule<T extends AbstractEquoRule<T>> implements
     return display;
   }
 
+  @SuppressWarnings("unused")
   private void disposeDisplay() {
     if (display != null && displayOwner) {
       if (!display.isDisposed()) {

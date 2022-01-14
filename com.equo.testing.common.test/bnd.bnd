@@ -12,18 +12,14 @@ swt.fragment: org.eclipse.swt.${ws}.${os}.x86_64
 -buildpath.graphics: ${swt.fragment}
 
 -buildpath: \
-    com.equo.testing.common; version=latest,\
-    org.apache.servicemix.bundles.junit; version=4.12,\
-    org.eclipse.reddeer.workbench;version='[2.9.0,2.9.1)',\
-	org.eclipse.reddeer.eclipse;version='[2.9.0,2.9.1)',\
-	org.eclipse.reddeer.jface;version='[2.9.0,2.9.1)',\
-	org.eclipse.reddeer.common;version='[2.9.0,2.9.1)',\
-    org.eclipse.reddeer.core;version='[2.9.0,2.9.1)',\
-    org.eclipse.reddeer.junit;version='[2.9.0,2.9.1)',\
-    org.eclipse.reddeer.swt;version='[2.9.0,2.9.1)',\
-    org.eclipse.reddeer.workbench.core;version='[2.9.0,2.9.1)',\
-    org.eclipse.reddeer.direct; bundle-version='[2.9.0,2.9.1)',\
-    org.eclipse.reddeer.requirements; bundle-version='[2.9.0,2.9.1)',\
+	com.equo.testing.common;version=latest,\
+	osgi.enroute.junit.wrapper,\
+	org.eclipse.reddeer.eclipse,\
+	org.eclipse.reddeer.common,\
+	org.eclipse.reddeer.core,\
+	org.eclipse.reddeer.requirements,\
+	org.eclipse.reddeer.workbench,\
+	org.eclipse.reddeer.jface,\
 	org.eclipse.ui.workbench;version='[3.117.0,3.117.1)',\
 	org.eclipse.ui.ide.application,\
 	org.apache.commons.io;version='[2.6.0,2.6.1)',\

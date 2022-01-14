@@ -1,0 +1,13 @@
+ver: 0.8.6
+-buildpath: \
+	org.jacoco:org.jacoco.agent:jar:runtime;version=${ver}
+
+Bundle-Version: ${ver}
+Export-Package: !*.internal*,*;version=${ver}
+-privatepackage: *.internal*
+
+Implementation-Title: JaCoCo Java Agent
+Premain-Class: org.jacoco.agent.rt.internal_f3994fa.PreMain
+Implementation-Vendor: Mountainminds GmbH & Co. KG
+
+Bundle-Description: OSGi bundle wrapping JaCoCo Agent

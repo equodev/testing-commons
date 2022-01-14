@@ -1,4 +1,4 @@
-Bundle-Version: 2.0.1.${tstamp}
+Bundle-Version: 2.0.2.${tstamp}
 Export-Package: \
     com.equo.testing.common.support,\
     com.equo.testing.common.statements,\
@@ -7,7 +7,11 @@ Export-Package: \
 -buildpath.graphics: ${if;${matches;${tolower;${os.name}};.*win.*};org.eclipse.swt.win32.win32.x86_64;${if;${matches;${tolower;${os.name}};.*mac.*};org.eclipse.swt.cocoa.macosx.x86_64;org.eclipse.swt.gtk.linux.x86_64}}
 
 -buildpath: \
+	osgi.enroute.junit.wrapper,\
+	org.mockito.mockito-all,\
 	org.eclipse.swt,\
+	org.eclipse.e4.core.contexts,\
+	org.eclipse.e4.core.di,\
 	org.eclipse.e4.ui.workbench,\
 	org.eclipse.e4.ui.workbench3,\
 	org.eclipse.e4.ui.workbench.swt,\
@@ -19,33 +23,16 @@ Export-Package: \
 	org.eclipse.ui.ide,\
 	org.eclipse.equinox.common,\
 	org.eclipse.core.commands,\
-	org.mockito.mockito-all,\
 	org.eclipse.e4.ui.workbench.renderers.swt,\
-	org.apache.servicemix.bundles.junit;version='4.12',\
-	org.eclipse.reddeer.common,\
-	org.eclipse.reddeer.core,\
-	org.eclipse.reddeer.core.source,\
-	org.eclipse.reddeer.common.source,\
-	org.eclipse.reddeer.direct,\
-	org.eclipse.reddeer.direct.source,\
-	org.eclipse.reddeer.junit,\
-	org.eclipse.reddeer.junit.source,\
-	org.eclipse.reddeer.requirements,\
-	org.eclipse.reddeer.requirements.source,\
-	org.eclipse.reddeer.workbench,\
-	org.eclipse.reddeer.workbench.source,\
 	org.eclipse.jface,\
 	org.eclipse.ui.workbench,\
 	org.eclipse.ui,\
 	org.eclipse.emf.ecore,\
 	org.eclipse.emf.common,\
 	org.eclipse.emf.ecore.xmi,\
-	org.eclipse.reddeer.eclipse
-
--buildpath.test: \
-    osgi.cmpn,\
-    org.eclipse.osgi,\
-    assertj-core;version=3.15.0,\
-    org.eclipse.e4.core.contexts,\
-    javax.inject,\
-    org.eclipse.e4.core.di
+	org.eclipse.reddeer.eclipse,\
+	org.eclipse.reddeer.common,\
+	org.eclipse.reddeer.core,\
+	org.eclipse.reddeer.requirements,\
+	org.eclipse.reddeer.junit,\
+	org.eclipse.osgi

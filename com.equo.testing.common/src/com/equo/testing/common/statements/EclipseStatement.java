@@ -138,7 +138,8 @@ public class EclipseStatement extends Statement {
   }
 
   /**
-   * Closes the IDE using the application handle obtained from the eclipse context.
+   * Closes the IDE using the application handle obtained from the eclipse
+   * context.
    */
   public void closeIde() {
     IEclipseContext eclipseContext = EclipseContextFactory
